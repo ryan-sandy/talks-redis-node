@@ -27,10 +27,8 @@ q.on('completed', function (job) {
   job.remove();
 });
 
-q.process(function (job, done) {
-  request().then(function () {
-    done();
-  });
+q.process(function (job) {
+  return request();
 });
 
 console.log('worker on-line');

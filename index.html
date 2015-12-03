@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="css/theme/white.css" id="theme">
 
 		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/github.css">
 
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
@@ -47,7 +47,7 @@
 				<section>
 					<h2>Overview</h2>
 					<ul>
-            <li>Background</li>
+            <li>Introduction</li>
             <li>Caches</li>
             <li>Event Emitter</li>
             <li>Queue</li>
@@ -56,16 +56,14 @@
 
 				<!-- Example of nested vertical slides -->
 				<section>
-          <h2>Background</h2>
+          <h2>Introduction</h2>
           <ul>
             <li>Redis</li>
             <ul>
-              <li>Nosql data store</li>
-              <li>Focuses on hashes, lists, and sets</li>
+              <li>In-memory data structure store</li>
+              <li>Strings, hashes, lists, sets, sorted set, bitmaps, hyperlogs, ...</li>
               <li><a href="http://redis.io">redis.io</a></li>
             </ul>
-          </ul>
-          <ul>
             <li>Node.js</li>
             <ul>
               <li>JavaScript interpreter on the server</li>
@@ -75,17 +73,18 @@
         </section>
 
         <section>
-          <h2>Commands and Drivers</h2>
+          <h2>Introduction</h2>
           <ul>
-            <li>Redis uses commands</li>
+            <li>Redis Commands</li>
             <ul>
               <li>set, get, hset, ...</li>
               <ul>
                 <li><a href="http://redis.io/commands">redis.io/commands</a></li>
               </ul>
               <li>redis-cli</li>
+              <li><a href="https://joeferner.github.io/redis-commander/">redis-commander</a></li>
             </ul>
-            <li>Node.js uses drivers</li>
+            <li>Node.js Libraries</li>
             <ul>
               <li><a href="https://github.com/luin/ioredis">ioredis</a></li>
               <li><a href="https://github.com/NodeRedis/node_redis">node_redis</a></li>
@@ -161,12 +160,9 @@ null
         <section>
           <h2>Cache</h2>
           <ul>
-            <li>Common Use Case</li>
-            <ul>
-              <li>Sessions</li>
-              <li>Share data across multiple applications and instances securely</li>
-            </ul>
-            <li>Libraries</li>
+            <li>Shared between applications</li>
+            <li>Scaled throughout an application</li>
+            <li>Useful for session data</li>
             <ul>
               <li>Express-session & connect-redis</li>
             </ul>
@@ -184,9 +180,9 @@ null
             </ul>
             <li>Redis Design</li>
             <ul>
-              <li>Channels</li>
-              <li>Publish</li>
-              <li>Subscribe</li>
+              <li>Channels (Event Emitter)</li>
+              <li>Publish (emit)</li>
+              <li>Subscribe (on)</li>
               <li>More info at <a href="http://redis.io/topics/pubsub">redis.io/topics/pubsub</a></li>
             </ul>
           </ul>
@@ -212,6 +208,19 @@ publisher.publish("channel 2", "Hello Edinburgh.js");
 message on channel 1: Hello Edinburgh.js
 message on channel 2: Hello Edinburgh.js
         </code></pre>
+        </section>
+
+        <section>
+          <h2>Publish-Subscribe</h2>
+          <ul>
+            <li>Extend an event across multiple applications</li>
+            <li>Cannot be scaled across instances</li>
+            <li>Do not dynamically create listeners</li>
+            <ul>
+              <li>Memory Leaks</li>
+              <li><code>once</code> instead of <code>on</code><li>
+            </ul>
+          </ul>
         </section>
 
         <section>
@@ -255,39 +264,24 @@ a job
         </section>
 
         <section>
-          <h2>Cautions and Warnings</h2>
+          <h2>Conclusion</h2>
           <ul>
-            <li>Dynamically creating handlers can leak memory.</li>
+            <li>Cache</li>
             <ul>
-              <li>Only create listeners once.</li>
-              <li>Use <code>once</code> instead of <code>on</code>
-              <li>Understand your use-case and design patterns</li>
+              <li>Share volatile data across instances and applications</li>
             </ul>
-            <li>Using the wrong design pattern</li>
+            <li>Pub/Sub</li>
             <ul>
-              <li>Pub/Sub - messages processed more than once</li>
-              <li>Queue - messages processed once</li>
+              <li>Share messages across multiple applications.</li>
+              <li>Does not scale.</li>
             </ul>
-            <li>Redis Limitations</li>
+            <li>Queue</li>
             <ul>
-              <li>Speed versus persistence (Disk writes)</li>
-              <li>Not as fast as in application</li>
+              <li>Offload long running jobs onto scalable workers.</li>
             </ul>
           </ul>
         </section>
 
-        <section>
-          <h2>Conclusion</h2>
-          <ul>
-            <li>Redis is great for</li>
-            <ul>
-              <li>Cache</li>
-              <li>Pub/Sub</li>
-              <li>Queues</li>
-              <li>Glueing apps together</li>
-            </ul>
-          </ul>
-        </section>
       </div>
 		</div>
 
