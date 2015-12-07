@@ -33,7 +33,7 @@
 			<div class="slides">
 				<section>
 					<h1>Node.js and Redis</h1>
-					<p>Using Redis to extend Caches, Events, and Queues Across Node.js Applications</p>
+					<p>Using Redis to scale Caches, Events, and Queues up and accross Node.js Applications</p>
           <p><small>Ryan-Sandy Lee</small></p>
           <p>
             <small style="text-align:left">
@@ -47,10 +47,24 @@
 				<section>
 					<h2>Overview</h2>
 					<ul>
+            <li>Definitions</li>
             <li>Introduction</li>
             <li>Caches</li>
             <li>Event Emitter</li>
             <li>Queue</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Definitions</h2>
+          <ul>
+            <li>Scaling Up</li>
+            <ul>
+              <li>Adding additional instances (copies) of the same application</li>
+            </ul>
+            <li>Scaling Out</li>
+            <ul>
+              <li>Adding functionality to different code bases</li>
+            </ul>
           </ul>
 				</section>
 
@@ -60,6 +74,7 @@
           <ul>
             <li>Redis</li>
             <ul>
+              <li>No-Sql</li>
               <li>In-memory data structure store</li>
               <li>Strings, hashes, lists, sets, sorted set, bitmaps, hyperlogs, ...</li>
               <li><a href="http://redis.io">redis.io</a></li>
@@ -123,7 +138,7 @@ redis.set("forever", "forever-value", function (err) {
             </ul>
             <li>Commands</li>
             <ul>
-              <li>setx</li>
+              <li>setex</li>
               <li>get</li>
               <li>expire</li>
             </ul>
@@ -160,8 +175,8 @@ null
         <section>
           <h2>Cache</h2>
           <ul>
-            <li>Shared between applications</li>
-            <li>Scaled throughout an application</li>
+            <li>Scale Up</li>
+            <li>Scale Out</li>
             <li>Useful for session data</li>
             <ul>
               <li>Express-session & connect-redis</li>
@@ -170,15 +185,15 @@ null
         </section>
 
         <section>
-          <h2>Publish-Subscribe</h2>
+          <h2>Event Emitter</h2>
           <ul>
             <li>Design Pattern</li>
             <ul>
               <li>Messages broadcast to zero or more listeners</li>
               <li>Possible for message to be consumed more than once</li>
-              <li>Node.js calls this an event emitter</li>
+              <li>Messages do not persist</li>
             </ul>
-            <li>Redis Design</li>
+            <li>Redis Design - Pub/Sub</li>
             <ul>
               <li>Channels (Event Emitter)</li>
               <li>Publish (emit)</li>
@@ -189,7 +204,7 @@ null
         </section>
 
         <section>
-          <h2>Publish-Subscribe Example</h2>
+          <h2>Event Emitter Example</h2>
           <pre><code class="javascript" data-trim>
 var redis = require("redis");
 var subscriber = redis.createClient();
@@ -211,14 +226,17 @@ message on channel 2: Hello Edinburgh.js
         </section>
 
         <section>
-          <h2>Publish-Subscribe</h2>
+          <h2>Event Emitter</h2>
           <ul>
-            <li>Extend an event across multiple applications</li>
-            <li>Cannot be scaled across instances</li>
+            <li>Scale Out</li>
+            <li>Does <strong>not</strong> scale up</li>
+            <ul>
+              <li>Each instance will handle message</li>
+            </ul>
             <li>Do not dynamically create listeners</li>
             <ul>
               <li>Memory Leaks</li>
-              <li><code>once</code> instead of <code>on</code><li>
+              <li><code>once</code> instead of <code>on</code></li>
             </ul>
           </ul>
         </section>
@@ -228,9 +246,9 @@ message on channel 2: Hello Edinburgh.js
           <ul>
             <li>Design Pattern</li>
             <ul>
-              <li>Jobs are pushed onto a queue and are processed by workers</li>
-              <li>Jobs are processed only once and in first in first out (FIFO) order</li>
-              <li>Workers can be scaled</li>
+              <li>Jobs are pushed onto a queue</li>
+              <li>Jobs processed once by a worker</li>
+              <li>First in first out (FIFO) order</li>
               <li>Jobs are persistent</li>
             </ul>
             <li>Redis Design</li>
@@ -260,6 +278,21 @@ a job
         </section>
 
         <section>
+          <h2>Queues</h2>
+          <ul>
+            <li>Does <strong>not</strong> scale out</li>
+            <ul>
+              <li>Need a queue per application</li>
+            </ul>
+            <li>Scales Up</li>
+            <li>Use case</li>
+            <ul>
+              <li>Emails</li>
+            </ul>
+          </ul>
+        </section>
+
+        <section>
           <h2>Advanced Example</h2>
         </section>
 
@@ -269,15 +302,20 @@ a job
             <li>Cache</li>
             <ul>
               <li>Share volatile data across instances and applications</li>
+              <li>Scales out</li>
+              <li>Scales up</li>
             </ul>
-            <li>Pub/Sub</li>
+            <li>Event Emitter</li>
             <ul>
               <li>Share messages across multiple applications.</li>
-              <li>Does not scale.</li>
+              <li>Scales Out</li>
+              <li>Does <strong>not</strong> scale up</li>
             </ul>
             <li>Queue</li>
             <ul>
               <li>Offload long running jobs onto scalable workers.</li>
+              <li>Does <strong>not</strong> scale out</li>
+              <li>Scales Up</li>
             </ul>
           </ul>
         </section>

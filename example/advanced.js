@@ -1,8 +1,6 @@
 /*
  * @file advanced.js
  * @author Ryan Lee
- * @copyright 2015 ERAS/Educational Research and Services
- * Reproduction of this material strictly prohibited.
  */
 
 'use strict';
@@ -13,7 +11,8 @@ var queue = require('bull');
 var Promise = require('bluebird');
 
 //Fake request
-var request = function () {
+var sendEmail = function (job) {
+  console.log('Sending email %s', job.data.emailId);
   return Promise.delay(500).then(function () {
     Promise.resolve(true);
   });
@@ -22,13 +21,13 @@ var request = function () {
 //this is our worker queue
 var q = queue('advanced');
 
+q.process(function (job) {
+  return sendEmail(job);
+});
+
 q.on('completed', function (job) {
-  console.log('job with userId %s finished', job.data.userId);
+  console.log('Job(%s) completed: Email %s sent', job.jobId, job.data.emailId);
   job.remove();
 });
 
-q.process(function (job) {
-  return request();
-});
-
-console.log('worker on-line');
+console.log('Email worker on-line');

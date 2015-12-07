@@ -1,8 +1,6 @@
 /*
  * @file advanced-client.js
  * @author Ryan Lee
- * @copyright 2015 ERAS/Educational Research and Services
- * Reproduction of this material strictly prohibited.
  */
 
 'use strict';
@@ -15,8 +13,8 @@ var q = queue('advanced');
 var array = new Array(10); 
 
 Promise.each(array, function (val, i) {
-  return q.add({'userId' : i});
+  return q.add({'emailId' : i});
 }).then(function () {
-  console.log('all jobs added');
+  console.log('all emails queued');
   q.close();
 });
