@@ -300,19 +300,19 @@ a job
           <ul>
             <li>Cache</li>
             <ul>
-              <li>Share volatile data across instances and applications</li>
+              <li>Set data with an expiration</li>
               <li>Scales out</li>
               <li>Scales up</li>
             </ul>
             <li>Event Emitter</li>
             <ul>
-              <li>Share messages across multiple applications.</li>
+              <li>Share messages to zero or more listeners</li>
               <li>Scales Out</li>
               <li>Does <strong>not</strong> scale up</li>
             </ul>
             <li>Queue</li>
             <ul>
-              <li>Offload long running jobs onto scalable workers.</li>
+              <li>Jobs are processed in FIFO order by workers</li>
               <li>Does <strong>not</strong> scale out</li>
               <li>Scales Up</li>
             </ul>
